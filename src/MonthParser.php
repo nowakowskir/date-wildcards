@@ -2,14 +2,12 @@
 
 namespace Nowakowskir\DateWildcards;
 
-use Illuminate\Support\Collection;
-
 class MonthParser
 {
 
-    public function parse(string $value): Collection
+    public function parse(string $value): array
     {
-        $collection = collect([]);
+        $collection = [];
 
         $matches = null;
 
@@ -30,28 +28,34 @@ class MonthParser
         return $collection;
     }
 
-    protected function parseSingleValue(string $value, Collection $collection): Collection
+    protected function parseSingleValue(string $value, array $collection): array
     {
-        $collection->add((int) $value);
+        $collection[] = (int) $value;
 
         return $collection;
     }
 
-    protected function parseMultipleValues(array $matches, Collection $collection): Collection
+    protected function parseMultipleValues(array $matches, array $collection): array
     {
         foreach (($matches[0] ?? []) as $match) {
-            $collection->add((int) $match);
+            $collection[] = (int) $match;
         }
 
-        return $collection->unique()->sort();
+        $collection = array_unique($collection);
+        asort($collection);
+
+        return $collection;
     }
 
-    public function fillMonthsInRange(int $fromMonth, int $toMonth, Collection $collection)
+    public function fillMonthsInRange(int $fromMonth, int $toMonth, array $collection): array
     {
         for ($m = $fromMonth; $m <= $toMonth; $m++) {
-            $collection->add($m);
+            $collection[] = $m;
         }
 
-        return $collection->unique()->sort();
+        $collection = array_unique($collection);
+        asort($collection);
+
+        return $collection;
     }
 }

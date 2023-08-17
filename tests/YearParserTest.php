@@ -17,8 +17,8 @@ class YearParserTest extends TestCase
             $a[] = $i;
         }
 
-        $this->assertCount(count($a), $yearsCollection->toArray());
-        $this->assertEquals($a, $yearsCollection->toArray());
+        $this->assertCount(count($a), $yearsCollection);
+        $this->assertEquals($a, $yearsCollection);
     }
 
     public function test_open_single_value_with_every_nth()
@@ -33,8 +33,8 @@ class YearParserTest extends TestCase
             }
         }
 
-        $this->assertCount(count($a), $yearsCollection->toArray());
-        $this->assertEquals($a, $yearsCollection->toArray());
+        $this->assertCount(count($a), $yearsCollection);
+        $this->assertEquals($a, $yearsCollection);
     }
 
     public function test_single_value()
@@ -42,8 +42,8 @@ class YearParserTest extends TestCase
         $yearParser = new YearParser();
         $yearsCollection = $yearParser->parse('2022');
 
-        $this->assertCount(1, $yearsCollection->toArray());
-        $this->assertEquals([2022], $yearsCollection->toArray());
+        $this->assertCount(1, $yearsCollection);
+        $this->assertEquals([2022], $yearsCollection);
     }
 
     public function test_two_values_comma_delimited()
@@ -51,8 +51,8 @@ class YearParserTest extends TestCase
         $yearParser = new YearParser();
         $yearsCollection = $yearParser->parse('2022,2023');
 
-        $this->assertCount(2, $yearsCollection->toArray());
-        $this->assertEquals([2022, 2023], $yearsCollection->toArray());
+        $this->assertCount(2, $yearsCollection);
+        $this->assertEquals([2022, 2023], $yearsCollection);
     }
 
     public function test_multiple_values_comma_delimited()
@@ -60,8 +60,8 @@ class YearParserTest extends TestCase
         $yearParser = new YearParser();
         $yearsCollection = $yearParser->parse('2022,2023,2024');
 
-        $this->assertCount(3, $yearsCollection->toArray());
-        $this->assertEquals([2022, 2023, 2024], $yearsCollection->toArray());
+        $this->assertCount(3, $yearsCollection);
+        $this->assertEquals([2022, 2023, 2024], $yearsCollection);
     }
 
     public function test_open_range_with_start_value()
@@ -69,7 +69,7 @@ class YearParserTest extends TestCase
         $yearParser = new YearParser();
         $yearsCollection = $yearParser->parse('2090-*');
 
-        $this->assertCount(10, $yearsCollection->toArray());
+        $this->assertCount(10, $yearsCollection);
         $this->assertEquals([
             2090,
             2091,
@@ -81,7 +81,7 @@ class YearParserTest extends TestCase
             2097,
             2098,
             2099
-        ], $yearsCollection->toArray());
+        ], $yearsCollection);
     }
 
     public function test_open_range_with_start_value_and_every_nth()
@@ -89,14 +89,14 @@ class YearParserTest extends TestCase
         $yearParser = new YearParser();
         $yearsCollection = $yearParser->parse('2090-*/2');
 
-        $this->assertCount(5, $yearsCollection->toArray());
+        $this->assertCount(5, $yearsCollection);
         $this->assertEquals([
             2090,
             2092,
             2094,
             2096,
             2098,
-        ], $yearsCollection->toArray());
+        ], $yearsCollection);
     }
 
     public function test_open_range_with_end_value()
@@ -109,8 +109,8 @@ class YearParserTest extends TestCase
             $a[] = $i;
         }
 
-        $this->assertCount(count($a), $yearsCollection->toArray());
-        $this->assertEquals($a, $yearsCollection->toArray());
+        $this->assertCount(count($a), $yearsCollection);
+        $this->assertEquals($a, $yearsCollection);
     }
 
     public function test_open_range_with_end_value_and_every_nth()
@@ -125,8 +125,8 @@ class YearParserTest extends TestCase
             }
         }
 
-        $this->assertCount(count($a), $yearsCollection->toArray());
-        $this->assertEquals($a, $yearsCollection->toArray());
+        $this->assertCount(count($a), $yearsCollection);
+        $this->assertEquals($a, $yearsCollection);
     }
 
     public function test_open_range_with_start_and_end_values()
@@ -134,7 +134,7 @@ class YearParserTest extends TestCase
         $yearParser = new YearParser();
         $yearsCollection = $yearParser->parse('2090-2095');
 
-        $this->assertCount(6, $yearsCollection->toArray());
+        $this->assertCount(6, $yearsCollection);
         $this->assertEquals([
             2090,
             2091,
@@ -142,7 +142,7 @@ class YearParserTest extends TestCase
             2093,
             2094,
             2095,
-        ], $yearsCollection->toArray());
+        ], $yearsCollection);
     }
 
     public function test_open_range_with_start_and_end_values_and_every_nth()
@@ -150,14 +150,14 @@ class YearParserTest extends TestCase
         $yearParser = new YearParser();
         $yearsCollection = $yearParser->parse('2090-2099/2');
 
-        $this->assertCount(5, $yearsCollection->toArray());
+        $this->assertCount(5, $yearsCollection);
         $this->assertEquals([
             2090,
             2092,
             2094,
             2096,
             2098,
-        ], $yearsCollection->toArray());
+        ], $yearsCollection);
     }
 
     public function test_open_range_with_start_and_end_values_and_every_nth_case_2()
@@ -165,13 +165,13 @@ class YearParserTest extends TestCase
         $yearParser = new YearParser();
         $yearsCollection = $yearParser->parse('2091-2098/2');
 
-        $this->assertCount(4, $yearsCollection->toArray());
+        $this->assertCount(4, $yearsCollection);
         $this->assertEquals([
             2091,
             2093,
             2095,
             2097,
-        ], $yearsCollection->toArray());
+        ], $yearsCollection);
     }
 
     public function test_open_range_limited_to_provided_limits()
@@ -179,12 +179,12 @@ class YearParserTest extends TestCase
         $yearParser = new YearParser(2000, 2002);
         $yearsCollection = $yearParser->parse('*');
 
-        $this->assertCount(3, $yearsCollection->toArray());
+        $this->assertCount(3, $yearsCollection);
         $this->assertEquals([
             2000,
             2001,
             2002
-        ], $yearsCollection->toArray());
+        ], $yearsCollection);
     }
 
     public function test_open_range_with_start_value_limited_to_provided_limits()
@@ -192,12 +192,12 @@ class YearParserTest extends TestCase
         $yearParser = new YearParser(2000, 2002);
         $yearsCollection = $yearParser->parse('2000-*');
 
-        $this->assertCount(3, $yearsCollection->toArray());
+        $this->assertCount(3, $yearsCollection);
         $this->assertEquals([
             2000,
             2001,
             2002
-        ], $yearsCollection->toArray());
+        ], $yearsCollection);
     }
 
     public function test_open_range_with_end_value_limited_to_provided_limits()
@@ -205,12 +205,12 @@ class YearParserTest extends TestCase
         $yearParser = new YearParser(2000, 2002);
         $yearsCollection = $yearParser->parse('*-2010');
 
-        $this->assertCount(3, $yearsCollection->toArray());
+        $this->assertCount(3, $yearsCollection);
         $this->assertEquals([
             2000,
             2001,
             2002
-        ], $yearsCollection->toArray());
+        ], $yearsCollection);
     }
 
     public function test_open_range_with_start_and_end_value_limited_to_provided_limits()
@@ -218,12 +218,12 @@ class YearParserTest extends TestCase
         $yearParser = new YearParser(2000, 2002);
         $yearsCollection = $yearParser->parse('1955-2010');
 
-        $this->assertCount(3, $yearsCollection->toArray());
+        $this->assertCount(3, $yearsCollection);
         $this->assertEquals([
             2000,
             2001,
             2002
-        ], $yearsCollection->toArray());
+        ], $yearsCollection);
     }
 
     public function test_multiple_values_limited_to_provided_limits()
@@ -231,11 +231,11 @@ class YearParserTest extends TestCase
         $yearParser = new YearParser(2000, 2002);
         $yearsCollection = $yearParser->parse('1999,2000,2003,2002,2005');
 
-        $this->assertCount(2, $yearsCollection->toArray());
+        $this->assertCount(2, $yearsCollection);
         $this->assertEquals([
             2000,
             2002
-        ], $yearsCollection->toArray());
+        ], $yearsCollection);
     }
 
     public function test_single_value_within_provided_limits()
@@ -243,10 +243,10 @@ class YearParserTest extends TestCase
         $yearParser = new YearParser(2000, 2002);
         $yearsCollection = $yearParser->parse('2002');
 
-        $this->assertCount(1, $yearsCollection->toArray());
+        $this->assertCount(1, $yearsCollection);
         $this->assertEquals([
             2002
-        ], $yearsCollection->toArray());
+        ], $yearsCollection);
     }
 
     public function test_single_value_out_of_provided_limit()
@@ -254,6 +254,6 @@ class YearParserTest extends TestCase
         $yearParser = new YearParser(2000, 2002);
         $yearsCollection = $yearParser->parse('2003');
 
-        $this->assertCount(0, $yearsCollection->toArray());
+        $this->assertCount(0, $yearsCollection);
     }
 }

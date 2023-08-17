@@ -2,8 +2,6 @@
 
 namespace Nowakowskir\DateWildcards;
 
-use Illuminate\Support\Collection;
-
 class DateWildcards
 {
 
@@ -16,21 +14,21 @@ class DateWildcards
         $this->toDate = $toDate;
     }
 
-    public function getDates($yearPattern, $monthPattern, $dayPattern, $weekDayPattern): Collection
+    public function getDates($yearPattern, $monthPattern, $dayPattern, $weekDayPattern): array
     {
         $yearParser = new YearParser((int) $this->fromDate->format('Y'), (int) $this->toDate->format('Y'));
         $years = $yearParser->parse($yearPattern);
 
-        $dates = new Collection([]);
+        $dates = [];
 
-        if ($years->isEmpty()) {
+        if (empty($years)) {
             return $dates;
         }
 
         $monthParser = new MonthParser();
         $months = $monthParser->parse($monthPattern);
 
-        if ($months->isEmpty()) {
+        if (empty($months)) {
             return $dates;
         }
 
@@ -38,30 +36,29 @@ class DateWildcards
         $weekDayParser = new WeekdayParser();
         $weekDays = $weekDayParser->parse($weekDayPattern)->toArray();
 
-        $years->each(function ($year) use ($dayParser, $weekDays, $months, $dayPattern, &$dates) {
-            $months->each(function ($month) use ($year, $dayParser, $weekDays, $months, $dayPattern, &$dates) {
+        foreach ($years as $year) {
+            foreach ($months as $month) {
                 $days = $dayParser->parse($year, $month, $dayPattern);
-
-                if (! $days->isEmpty()) {
-                    $days->each(function ($day) use ($year, $month, $weekDays, &$dates) {
+                if (! empty($days)) {
+                    foreach ($days as $day) {
                         $dateAsString = sprintf('%d-%02d-%02d', $year, $month, $day);
                         $date = Carbon::createFromFormat('Y-m-d', $dateAsString);
 
                         if ($date
-                            && in_array((int) $date->format('N'), $weekDays)
-                            && $this->isBetween((int) $date->timestamp, (int) $this->fromDate->timestamp, (int) $this->toDate->timestamp)) {
+                            && in_array((int)$date->format('N'), $weekDays)
+                            && $this->isBetween((int)$date->timestamp, (int)$this->fromDate->timestamp, (int)$this->toDate->timestamp)) {
 
-                            $dates->add($dateAsString);
+                            $dates[] = $dateAsString;
                         }
-                    });
+                    }
                 }
-            });
-        });
+            }
+        }
 
-        return $dates
-            ->unique()
-            ->sort()
-            ->values();
+        $dates = array_unique($dates);
+        asort($dates);
+
+        return $dates;
     }
 
     protected function isBetween(int $value, int $lowerLimit, int $upperLimit): bool

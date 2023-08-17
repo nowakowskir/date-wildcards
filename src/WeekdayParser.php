@@ -2,14 +2,12 @@
 
 namespace Nowakowskir\DateWildcards;
 
-use Illuminate\Support\Collection;
-
 class WeekdayParser
 {
 
-    public function parse(string $value): Collection
+    public function parse(string $value): array
     {
-        $collection = collect([]);
+        $collection = [];
 
         $matches = null;
 
@@ -30,28 +28,34 @@ class WeekdayParser
         return $collection;
     }
 
-    protected function parseSingleValue(string $value, Collection $collection): Collection
+    protected function parseSingleValue(string $value, array $collection): array
     {
-        $collection->add((int) $value);
+        $collection[] = (int) $value;
 
         return $collection;
     }
 
-    protected function parseMultipleValues(array $matches, Collection $collection): Collection
+    protected function parseMultipleValues(array $matches, array $collection): array
     {
         foreach (($matches[0] ?? []) as $match) {
-            $collection->add((int) $match);
+            $collection[] = (int) $match;
         }
 
-        return $collection->unique()->sort();
+        $collection = array_unique($collection);
+        asort($collection);
+
+        return $collection;
     }
 
-    public function fillWeekDaysInRange(int $fromWeekDay, int $toWeekDay, Collection $collection): Collection
+    public function fillWeekDaysInRange(int $fromWeekDay, int $toWeekDay, array $collection): array
     {
         for ($w = $fromWeekDay; $w <= $toWeekDay; $w++) {
-            $collection->add($w);
+            $collection[] = $w;
         }
 
-        return $collection->unique()->sort();
+        $collection = array_unique($collection);
+        asort($collection);
+
+        return $collection;
     }
 }

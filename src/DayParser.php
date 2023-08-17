@@ -3,14 +3,13 @@
 namespace Nowakowskir\DateWildcards;
 
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
 
 class DayParser
 {
 
-    public function parse(int $year, int $month, string $value): Collection
+    public function parse(int $year, int $month, string $value): array
     {
-        $collection = collect([]);
+        $collection = [];
 
         $refDate = Carbon::createFromFormat('Y-n-j', sprintf('%d-%d-1', $year, $month));
         $daysInMonth = $refDate->daysInMonth;
@@ -38,23 +37,23 @@ class DayParser
         return $collection;
     }
 
-    protected function parseSingleValue(string $value, int $daysInMonth, Collection $collection): Collection
+    protected function parseSingleValue(string $value, int $daysInMonth, array $collection): array
     {
         $day = (int) $value;
 
         if ($day <= 0) {
             $day = $daysInMonth - abs($day);
             if ($day >= 1) {
-                $collection->add($day);
+                $collection[] = $day;
             }
         } elseif ($day <= $daysInMonth) {
-            $collection->add($day);
+            $collection[] = $day;
         }
 
         return $collection;
     }
 
-    protected function parseMultipleValues(array $matches, int $daysInMonth, Collection $collection): Collection
+    protected function parseMultipleValues(array $matches, int $daysInMonth, array $collection): array
     {
         foreach (($matches[0] ?? []) as $match) {
             $day = (int) $match;
@@ -62,17 +61,20 @@ class DayParser
             if ($day <= 0) {
                 $day = $daysInMonth - abs($day);
                 if ($day >= 1) {
-                    $collection->add($day);
+                    $collection[] = $day;
                 }
             } elseif ($day <= $daysInMonth) {
-                $collection->add($day);
+                $collection[] = $day;
             }
         }
 
-        return $collection->unique()->sort()->values();
+        $collection = array_unique($collection);
+        asort($collection);
+
+        return array_values($collection);
     }
 
-    public function fillDaysInRange(string $fromDay, string $toDay, int $daysInMonth, Collection $collection)
+    public function fillDaysInRange(string $fromDay, string $toDay, int $daysInMonth, array $collection)
     {
         if ($fromDay === '-0') {
             $fromDay = $daysInMonth;
@@ -87,12 +89,13 @@ class DayParser
 
         for ($d = $fromDay; $d <= $toDay; $d++) {
             if ($d <= $daysInMonth) {
-                $collection->add($d);
+                $collection[] = $d;
             }
         }
 
-        return $collection->unique()
-            ->sort()
-            ->values();
+        $collection = array_unique($collection);
+        asort($collection);
+
+        return array_values($collection);
     }
 }

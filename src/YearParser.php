@@ -2,8 +2,6 @@
 
 namespace Nowakowskir\DateWildcards;
 
-use Illuminate\Support\Collection;
-
 class YearParser
 {
 
@@ -21,9 +19,9 @@ class YearParser
         }
     }
 
-    public function parse(string $value): Collection
+    public function parse(string $value): array
     {
-        $collection = collect([]);
+        $collection = [];
 
         $matches = null;
 
@@ -66,26 +64,29 @@ class YearParser
         return $value1;
     }
 
-    protected function parseSingleValue(string $value, Collection $collection): Collection
+    protected function parseSingleValue(string $value, array $collection): array
     {
         $value = (int) $value;
         if ($this->isBetween($value, $this->lowerLimit, $this->upperLimit)) {
-            $collection->add($value);
+            $collection[] = $value;
         }
 
         return $collection;
     }
 
-    protected function parseMultipleValues(array $matches, Collection $collection): Collection
+    protected function parseMultipleValues(array $matches, array $collection): array
     {
         foreach (($matches[0] ?? []) as $match) {
             $value = (int) $match;
             if ($this->isBetween($value, $this->lowerLimit, $this->upperLimit)) {
-                $collection->add((int) $match);
+                $collection[] = (int) $match;
             }
         }
 
-        return $collection->unique()->sort();
+        $collection = array_unique($collection);
+        asort($collection);
+
+        return $collection;
     }
 
     public function isBetween(int $value, int $lowerLimit, int $upperLimit)
@@ -93,21 +94,24 @@ class YearParser
         return $value >= $lowerLimit && $value <= $upperLimit;
     }
 
-    public function fillYearsInRange(int $fromYear, int $toYear, ?int $everyNth, Collection $collection): Collection
+    public function fillYearsInRange(int $fromYear, int $toYear, ?int $everyNth, array $collection): array
     {
         $i = 0;
         for ($y = $fromYear; $y <= $toYear; $y++) {
             if (! is_null($everyNth) && $everyNth > 0) {
                 if ($i === 0 || $i % $everyNth === 0) {
-                    $collection->add($y);
+                    $collection[] = $y;
                 }
 
                 $i++;
             } else {
-                $collection->add($y);
+                $collection[] = $y;
             }
         }
 
-        return $collection->unique()->sort();
+        $collection = array_unique($collection);
+        asort($collection);
+
+        return $collection;
     }
 }
