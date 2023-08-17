@@ -1,0 +1,36 @@
+{
+  "name": "nowakowskir/date-wildcards",
+  "description": "Describe your occurrences dates with the wildcards.",
+  "type": "library",
+  "homepage": "https://github.com/nowakowskir/date-wildcards",
+  "authors": [
+    {
+      "name": "Radosław Nowakowski",
+      "email": "nowakowski.r@gmail.com"
+    }
+  ],
+  "keywords": [
+    "php",
+    "date",
+    "wildcard",
+    "occurrence"
+  ],
+  "license": "BSD-3-Clause",
+  "require": {
+    "php": ">=8.0.1",
+    "illuminate/support": "^10.19"
+  },
+  "autoload": {
+    "psr-4": {
+      "Nowakowskir\\DateWildcards\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.5|^8.0"
+  }
+}

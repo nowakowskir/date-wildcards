@@ -1,0 +1,10 @@
+<phpunit bootstrap="vendor/autoload.php">
+    <testsuites>
+        <testsuite name="Wildcards">
+            <file>tests/DayParserTest.php</file>
+            <file>tests/WeekdayParserTest.php</file>
+            <file>tests/MonthParserTest.php</file>
+            <file>tests/YearParserTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>
