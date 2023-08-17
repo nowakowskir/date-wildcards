@@ -10,7 +10,7 @@ class DateWildcards
     protected Carbon $fromDate;
     protected Carbon $toDate;
 
-    public function __construct(DateTime $fromDate, DateTime $toDate)
+    public function __construct(Carbon $fromDate, Carbon $toDate)
     {
         $this->fromDate = $fromDate;
         $this->toDate = $toDate;
