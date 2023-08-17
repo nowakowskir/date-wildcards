@@ -36,7 +36,7 @@ class DateWildcards
 
         $dayParser = new DayParser();
         $weekDayParser = new WeekdayParser();
-        $weekDays = $weekDayParser->parse($weekDayPattern)->toArray();
+        $weekDays = $weekDayParser->parse($weekDayPattern);
 
         foreach ($years as $year) {
             foreach ($months as $month) {
