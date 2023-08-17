@@ -2,13 +2,15 @@
 
 namespace Nowakowskir\DateWildcards;
 
+use Carbon\Carbon;
+
 class DateWildcards
 {
 
     protected Carbon $fromDate;
     protected Carbon $toDate;
 
-    public function __construct(Carbon $fromDate, Carbon $toDate)
+    public function __construct(DateTime $fromDate, DateTime $toDate)
     {
         $this->fromDate = $fromDate;
         $this->toDate = $toDate;
